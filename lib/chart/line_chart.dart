@@ -135,7 +135,8 @@ class LineChart {
   }
 
   //Calculate ui pixels values
-  void initialize(double widthPX, double heightPX, TextStyle? style) {
+  void initialize(double widthPX, double heightPX, TextStyle? style,
+      [double? xAxisLabelOffset]) {
     _calcScales(heightPX);
 
     //calc axis textpainters, before using
@@ -234,7 +235,8 @@ class LineChart {
       index++;
     });
 
-    _axisOffSetWithPadding = xAxisOffsetPX - axisMargin;
+    final offestX = xAxisLabelOffset ?? xAxisOffsetPX;
+    _axisOffSetWithPadding = offestX - axisMargin;
     _xAxisTexts = [];
 
     //Todo: make the axis part generic, to support both string, dates, and numbers

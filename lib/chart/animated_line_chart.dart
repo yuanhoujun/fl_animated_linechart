@@ -116,26 +116,28 @@ class AnimatedLineChart extends StatefulWidget {
   /// Defaults to 'true'.
   final bool? showMinutesInTooltip;
 
-  const AnimatedLineChart(
-    this.chart, {
-    Key? key,
-    this.tapText,
-    this.textStyle,
-    required this.gridColor,
-    required this.toolTipColor,
-    this.legends = const [],
-    this.showMarkerLines = false,
-    this.verticalMarker = const [],
-    this.verticalMarkerColor,
-    this.verticalMarkerIcon = const [],
-    this.iconBackgroundColor,
-    this.fillMarkerLines = false,
-    this.innerGridStrokeWidth = 0.0,
-    this.filledMarkerLinesValues = const [],
-    this.legendsRightLandscapeMode = false,
-    this.useLineColorsInTooltip = false,
-    this.showMinutesInTooltip = true,
-  }) : super(key: key);
+  final double? xAxisLabelOffset;
+
+  const AnimatedLineChart(this.chart,
+      {Key? key,
+      this.tapText,
+      this.textStyle,
+      required this.gridColor,
+      required this.toolTipColor,
+      this.legends = const [],
+      this.showMarkerLines = false,
+      this.verticalMarker = const [],
+      this.verticalMarkerColor,
+      this.verticalMarkerIcon = const [],
+      this.iconBackgroundColor,
+      this.fillMarkerLines = false,
+      this.innerGridStrokeWidth = 0.0,
+      this.filledMarkerLinesValues = const [],
+      this.legendsRightLandscapeMode = false,
+      this.useLineColorsInTooltip = false,
+      this.showMinutesInTooltip = true,
+      this.xAxisLabelOffset})
+      : super(key: key);
 
   @override
   _AnimatedLineChartState createState() => _AnimatedLineChartState();
@@ -181,8 +183,11 @@ class _AnimatedLineChartState extends State<AnimatedLineChart>
                 Expanded(
                   child: LayoutBuilder(builder:
                       (BuildContext context, BoxConstraints constraints) {
-                    widget.chart.initialize(constraints.maxWidth,
-                        constraints.maxHeight, widget.textStyle);
+                    widget.chart.initialize(
+                        constraints.maxWidth,
+                        constraints.maxHeight,
+                        widget.textStyle,
+                        widget.xAxisLabelOffset);
                     return _GestureWrapper(
                       widget.chart,
                       _animation,
@@ -229,8 +234,11 @@ class _AnimatedLineChartState extends State<AnimatedLineChart>
                 Expanded(
                   child: LayoutBuilder(builder:
                       (BuildContext context, BoxConstraints constraints) {
-                    widget.chart.initialize(constraints.maxWidth,
-                        constraints.maxHeight, widget.textStyle);
+                    widget.chart.initialize(
+                        constraints.maxWidth,
+                        constraints.maxHeight,
+                        widget.textStyle,
+                        widget.xAxisLabelOffset);
                     return _GestureWrapper(
                       widget.chart,
                       _animation,

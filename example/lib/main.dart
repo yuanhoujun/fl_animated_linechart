@@ -176,9 +176,12 @@ class _MyHomePageState extends State<MyHomePage> with FakeChartSeries {
                 child: AnimatedLineChart(
                   chart,
                   key: UniqueKey(),
+                  showMinutesInTooltip: true,
                   gridColor: Colors.black54,
                   textStyle: TextStyle(fontSize: 10, color: Colors.black54),
                   toolTipColor: Colors.white,
+                  fillMarkerLines: true,
+                  useLineColorsInTooltip: true,
                   legends: chartIndex == 3
                       ? [
                           Legend(
@@ -219,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage> with FakeChartSeries {
                           ),
                         ]
                       : [],
-                  showMarkerLines: chartIndex == 3 ? true : false,
+                  showMarkerLines: true,
                   verticalMarkerColor: chartIndex == 3 ? Colors.red : null,
                   verticalMarker: [
                     DateTime.parse('2012-02-27 13:08:00'),
@@ -235,8 +238,9 @@ class _MyHomePageState extends State<MyHomePage> with FakeChartSeries {
                       color: Colors.green,
                     ),
                   ],
+                  xAxisLabelOffset: 45,
                   iconBackgroundColor: Colors.white,
-                  legendsRightLandscapeMode: true,
+                  legendsRightLandscapeMode: false,
                 ), //Unique key to force animations
               )),
               SizedBox(width: 200, height: 50, child: Text('')),
