@@ -1,8 +1,4 @@
 import 'package:example/fake_chart_series.dart';
-import 'package:fl_animated_linechart/chart/chart_line.dart';
-import 'package:fl_animated_linechart/chart/chart_point.dart';
-import 'package:fl_animated_linechart/common/dates.dart';
-import 'package:fl_animated_linechart/common/pair.dart';
 import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 import 'package:flutter/material.dart';
 
@@ -37,18 +33,15 @@ class _MyHomePageState extends State<MyHomePage> with FakeChartSeries {
   @override
   Widget build(BuildContext context) {
     String? title = widget.title ?? '';
-    Map<DateTime, double> line1 = createLine2();
-    Map<DateTime, double> line2 = createLine2_2();
+    Map<int, int> line1 = createLine2();
+    Map<int, int> line2 = createLine2_2();
     Map<DateTime, double> line3 = yAxisUpperMaxMarkerLine();
     Map<DateTime, double> line4 = yAxisUpperMinMarkerLine();
     Map<DateTime, double> line5 = yAxisLowerMinMarkerLine();
     Map<DateTime, double> line6 = yAxisLowerMaxMarkerLine();
     Map<DateTime, double> line7 = createLine2_3();
 
-    LineChart chart;
-
-    if (chartIndex == 0) {
-      chart = LineChart.fromDateTimeMaps([
+    LineChart chart = LineChart.fromIntMaps([
         line1,
         line2,
       ], [
@@ -59,46 +52,36 @@ class _MyHomePageState extends State<MyHomePage> with FakeChartSeries {
         'C',
       ], tapTextFontWeight: FontWeight.w400);
 
-      // chart = LineChart([
-      //   ChartLine([
-      //     ChartPoint(1, 1),
-      //     ChartPoint(2, 2),
-      //     ChartPoint(3, 3),
-      //     ChartPoint(4, 4),
-      //     ChartPoint(5, 5),
-      //     ChartPoint(6, 6),
-      //     ChartPoint(7, 7),
-      //     ChartPoint(8, 8),
-      //   ], Colors.red, "单位")
-      // ], Dates(null, null));
+    if (chartIndex == 0) {
+      
     } else if (chartIndex == 1) {
-      chart = LineChart.fromDateTimeMaps(
-          [createLineAlmostSaveValues()], [Colors.green], ['C'],
-          tapTextFontWeight: FontWeight.w400);
+      // chart = LineChart.fromDateTimeMaps(
+      //     [createLineAlmostSaveValues()], [Colors.green], ['C'],
+      //     tapTextFontWeight: FontWeight.w400);
     } else {
-      chart = LineChart.fromDateTimeMaps([
-        line7,
-        line3,
-        line4,
-        line5,
-        line6,
-      ], [
-        Colors.blue,
-        Colors.red,
-        Colors.yellow,
-        Colors.yellow,
-        Colors.red,
-      ], [
-        'C',
-        'C',
-        'C',
-        'C',
-        'C',
-      ], tapTextFontWeight: FontWeight.w400);
-      chart.lines[1].isMarkerLine = true;
-      chart.lines[2].isMarkerLine = true;
-      chart.lines[3].isMarkerLine = true;
-      chart.lines[4].isMarkerLine = true;
+      // chart = LineChart.fromDateTimeMaps([
+      //   line7,
+      //   line3,
+      //   line4,
+      //   line5,
+      //   line6,
+      // ], [
+      //   Colors.blue,
+      //   Colors.red,
+      //   Colors.yellow,
+      //   Colors.yellow,
+      //   Colors.red,
+      // ], [
+      //   'C',
+      //   'C',
+      //   'C',
+      //   'C',
+      //   'C',
+      // ], tapTextFontWeight: FontWeight.w400);
+      // chart.lines[1].isMarkerLine = true;
+      // chart.lines[2].isMarkerLine = true;
+      // chart.lines[3].isMarkerLine = true;
+      // chart.lines[4].isMarkerLine = true;
     }
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
       textStyle: TextStyle(fontSize: 13),

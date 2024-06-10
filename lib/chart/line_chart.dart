@@ -34,7 +34,7 @@ class LineChart {
   static final double stepCount = 10;
 
   final List<ChartLine> lines;
-  final Dates fromTo;
+  final FromTo fromTo;
   double _minX = 0;
   double _maxX = 0;
   double _xAxisOffsetPX = 0;
@@ -70,8 +70,8 @@ class LineChart {
         this._formatDayMonth = DateFormat(formatDayMonth),
         this._formatMonths = DateFormat(formatMonths);
 
-  factory LineChart.fromDateTimeMaps(
-    List<Map<DateTime, double>> series,
+  factory LineChart.fromIntMaps(
+    List<Map<int, int>> series,
     List<Color> colors,
     List<String> units, {
     FontWeight? tapTextFontWeight,
@@ -81,8 +81,8 @@ class LineChart {
     assert(series.length == colors.length);
     assert(series.length == units.length);
 
-    Pair<List<ChartLine>, Dates> convertFromDateMaps =
-        DateTimeSeriesConverter.convertFromDateMaps(series, colors, units);
+    Pair<List<ChartLine>, FromTo> convertFromDateMaps =
+        IntSeriesConverter.convertFromIntMaps(series, colors, units);
     return LineChart(convertFromDateMaps.left, convertFromDateMaps.right,
         tapTextFontWeight: tapTextFontWeight,
         showMonthsName: showMonthsName,
@@ -245,15 +245,14 @@ class LineChart {
     _xAxisTexts = [];
 
     //Todo: make the axis part generic, to support both string, dates, and numbers
-    Duration duration = fromTo.max!.difference(fromTo.min!);
-    double stepInSeconds = duration.inSeconds.toDouble() / (stepCount + 1);
+    int delta = fromTo.max! - fromTo.min!;
+    double stepInSeconds = delta.toDouble() / (stepCount + 1);
 
     for (int c = 0; c <= (stepCount + 1); c++) {
-      DateTime tick =
-          fromTo.min!.add(Duration(seconds: (stepInSeconds * c).round()));
+      double tick = fromTo.min! + (stepInSeconds * c);
 
       TextSpan span =
-          new TextSpan(style: style, text: _formatDateTime(tick, duration));
+          new TextSpan(style: style, text: _formatIntValue(tick));
       TextPainter tp = new TextPainter(
           text: span,
           textAlign: TextAlign.right,
@@ -264,14 +263,8 @@ class LineChart {
     }
   }
 
-  String _formatDateTime(DateTime dateTime, Duration duration) {
-    if (duration.inHours < 30) {
-      return _formatHoursMinutes.format(dateTime.toLocal());
-    } else if (showMonthsName == true) {
-      return _formatMonths.format(dateTime.toLocal());
-    } else {
-      return _formatDayMonth.format(dateTime.toLocal());
-    }
+  String _formatIntValue(double value) {
+    return value.toInt().toString();
   }
 
   double? get heightStepSize => _heightStepSize;

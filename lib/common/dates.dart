@@ -1,6 +1,6 @@
-class Dates {
-  final DateTime? min;
-  final DateTime? max;
+class FromTo {
+  final int? min;
+  final int? max;
 
-  Dates(this.min, this.max);
+  FromTo(this.min, this.max);
 }

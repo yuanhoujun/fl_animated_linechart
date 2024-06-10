@@ -1,16 +1,14 @@
 import 'dart:ui';
 
 import 'package:fl_animated_linechart/chart/chart_line.dart';
-import 'package:fl_animated_linechart/chart/datetime_chart_point.dart';
+import 'package:fl_animated_linechart/chart/chart_point.dart';
 import 'package:fl_animated_linechart/common/dates.dart';
 import 'package:fl_animated_linechart/common/pair.dart';
 
-class DateTimeSeriesConverter {
-  static Pair<List<ChartLine>, Dates> convertFromDateMaps(
-      List<Map<DateTime, double>> series,
-      List<Color> colors,
-      List<String> units) {
-    Dates minMax = _findMinMax(series);
+class IntSeriesConverter {
+  static Pair<List<ChartLine>, FromTo> convertFromIntMaps(
+      List<Map<int, int>> series, List<Color> colors, List<String> units) {
+    FromTo minMax = _findMinMax(series);
 
     int index = 0;
     List<ChartLine> lines = series
@@ -21,40 +19,36 @@ class DateTimeSeriesConverter {
   }
 
   static ChartLine _convert(
-      Map<DateTime, double> input, Dates minMax, Color color, String unit) {
-    DateTime? from = minMax.min;
+      Map<int, int> input, FromTo minMax, Color color, String unit) {
+    List<ChartPoint> result = [];
 
-    List<DateTimeChartPoint> result = [];
-
-    input.forEach((dateTime, value) {
-      double x = dateTime.difference(from!).inSeconds.toDouble();
-      double y = value;
-      result.add(DateTimeChartPoint(x, y, dateTime));
+    input.forEach((x, y) {
+      result.add(ChartPoint(x.toDouble(), y.toDouble()));
     });
 
     return ChartLine(result, color, unit);
   }
 
-  static Dates _findMinMax(List<Map<DateTime, double>> list) {
-    DateTime? min;
-    DateTime? max;
+  static FromTo _findMinMax(List<Map<int, int>> list) {
+    int? min;
+    int? max;
 
     list.forEach((map) {
-      map.keys.forEach((dateTime) {
+      map.keys.forEach((x) {
         if (min == null) {
-          min = dateTime;
-          max = dateTime;
+          min = x;
+          max = x;
         } else {
-          if (dateTime.isBefore(min!)) {
-            min = dateTime;
+          if (x < min!) {
+            min = x;
           }
-          if (dateTime.isAfter(max!)) {
-            max = dateTime;
+          if (x > max!) {
+            max = x;
           }
         }
       });
     });
 
-    return Dates(min, max);
+    return FromTo(min, max);
   }
 }
