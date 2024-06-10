@@ -1,5 +1,7 @@
 import 'package:example/fake_chart_series.dart';
-import 'package:fl_animated_linechart/chart/area_line_chart.dart';
+import 'package:fl_animated_linechart/chart/chart_line.dart';
+import 'package:fl_animated_linechart/chart/chart_point.dart';
+import 'package:fl_animated_linechart/common/dates.dart';
 import 'package:fl_animated_linechart/common/pair.dart';
 import 'package:fl_animated_linechart/fl_animated_linechart.dart';
 import 'package:flutter/material.dart';
@@ -56,15 +58,23 @@ class _MyHomePageState extends State<MyHomePage> with FakeChartSeries {
         'C',
         'C',
       ], tapTextFontWeight: FontWeight.w400);
+
+      // chart = LineChart([
+      //   ChartLine([
+      //     ChartPoint(1, 1),
+      //     ChartPoint(2, 2),
+      //     ChartPoint(3, 3),
+      //     ChartPoint(4, 4),
+      //     ChartPoint(5, 5),
+      //     ChartPoint(6, 6),
+      //     ChartPoint(7, 7),
+      //     ChartPoint(8, 8),
+      //   ], Colors.red, "单位")
+      // ], Dates(null, null));
     } else if (chartIndex == 1) {
       chart = LineChart.fromDateTimeMaps(
           [createLineAlmostSaveValues()], [Colors.green], ['C'],
           tapTextFontWeight: FontWeight.w400);
-    } else if (chartIndex == 2) {
-      chart = AreaLineChart.fromDateTimeMaps(
-          [line1], [Colors.red.shade900], ['C'],
-          yAxisName: "Temperature",
-          gradients: [Pair(Colors.yellow.shade400, Colors.red.shade700)]);
     } else {
       chart = LineChart.fromDateTimeMaps([
         line7,
@@ -178,7 +188,7 @@ class _MyHomePageState extends State<MyHomePage> with FakeChartSeries {
                   key: UniqueKey(),
                   showMinutesInTooltip: true,
                   gridColor: Colors.black54,
-                  textStyle: TextStyle(fontSize: 10, color: Colors.black54),
+                  textStyle: TextStyle(fontSize: 30, color: Colors.red),
                   toolTipColor: Colors.white,
                   fillMarkerLines: true,
                   useLineColorsInTooltip: true,
@@ -223,7 +233,7 @@ class _MyHomePageState extends State<MyHomePage> with FakeChartSeries {
                         ]
                       : [],
                   showMarkerLines: true,
-                  verticalMarkerColor: chartIndex == 3 ? Colors.red : null,
+                  verticalMarkerColor: Colors.red,
                   verticalMarker: [
                     DateTime.parse('2012-02-27 13:08:00'),
                     DateTime.parse('2012-02-27 13:16:00')
@@ -241,6 +251,7 @@ class _MyHomePageState extends State<MyHomePage> with FakeChartSeries {
                   xAxisLabelOffset: 45,
                   iconBackgroundColor: Colors.white,
                   legendsRightLandscapeMode: false,
+                  yAxisLabelOffset: 40,
                 ), //Unique key to force animations
               )),
               SizedBox(width: 200, height: 50, child: Text('')),

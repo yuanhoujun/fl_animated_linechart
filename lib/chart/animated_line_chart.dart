@@ -1,11 +1,9 @@
 import 'dart:math';
 
-import 'package:fl_animated_linechart/chart/area_line_chart.dart';
 import 'package:fl_animated_linechart/chart/datetime_chart_point.dart';
 import 'package:fl_animated_linechart/chart/highlight_point.dart';
 import 'package:fl_animated_linechart/chart/line_chart.dart';
 import 'package:fl_animated_linechart/common/animated_path_util.dart';
-import 'package:fl_animated_linechart/common/pair.dart';
 import 'package:fl_animated_linechart/common/text_direction_helper.dart';
 import 'package:fl_animated_linechart/common/tuple_3.dart';
 import 'package:fl_animated_linechart/fl_animated_linechart.dart';
@@ -118,6 +116,8 @@ class AnimatedLineChart extends StatefulWidget {
 
   final double? xAxisLabelOffset;
 
+  final double? yAxisLabelOffset;
+
   const AnimatedLineChart(this.chart,
       {Key? key,
       this.tapText,
@@ -136,7 +136,8 @@ class AnimatedLineChart extends StatefulWidget {
       this.legendsRightLandscapeMode = false,
       this.useLineColorsInTooltip = false,
       this.showMinutesInTooltip = true,
-      this.xAxisLabelOffset})
+      this.xAxisLabelOffset,
+      this.yAxisLabelOffset})
       : super(key: key);
 
   @override
@@ -187,7 +188,8 @@ class _AnimatedLineChartState extends State<AnimatedLineChart>
                         constraints.maxWidth,
                         constraints.maxHeight,
                         widget.textStyle,
-                        widget.xAxisLabelOffset);
+                        widget.xAxisLabelOffset,
+                        widget.yAxisLabelOffset);
                     return _GestureWrapper(
                       widget.chart,
                       _animation,
@@ -238,7 +240,8 @@ class _AnimatedLineChartState extends State<AnimatedLineChart>
                         constraints.maxWidth,
                         constraints.maxHeight,
                         widget.textStyle,
-                        widget.xAxisLabelOffset);
+                        widget.xAxisLabelOffset,
+                        widget.yAxisLabelOffset);
                     return _GestureWrapper(
                       widget.chart,
                       _animation,
@@ -482,7 +485,7 @@ class _AnimatedChart extends AnimatedWidget {
 }
 
 class ChartPainter extends CustomPainter {
-  static final double _stepCount = 5;
+  static final double _stepCount = 10;
 
   final DateFormat _formatMonthDayHoursMinutes = DateFormat('dd/MM kk:mm');
   final DateFormat _formatMonthDayYear = DateFormat.yMd();
@@ -705,7 +708,7 @@ class ChartPainter extends CustomPainter {
       tp.paint(
           canvas,
           Offset(
-              _chart.axisOffSetWithPadding! - tp.width,
+              _chart.yAxisLabelOffset - tp.width,
               (size.height - 6) -
                   (c * _chart.heightStepSize!) -
                   LineChart.axisOffsetPX));
@@ -727,12 +730,12 @@ class ChartPainter extends CustomPainter {
     //TODO: calculate and cache
     for (int c = 0; c <= (_stepCount + 1); c++) {
       double x = _chart.showMonthsName == true
-          ? _chart.axisOffSetWithPadding! + (c * _chart.widthStepSize! - 20)
-          : _chart.axisOffSetWithPadding! + (c * _chart.widthStepSize!);
+          ? _chart.xAxisLabelOffset + (c * _chart.widthStepSize! - 20)
+          : _chart.xAxisLabelOffset + (c * _chart.widthStepSize!);
 
       double angleRotationInRadians =
           _chart.showMonthsName == true ? pi * 1.62 : pi * 1.5;
-
+      print("@@@@@@@@@@@$c");
       _drawRotatedText(canvas, _chart.xAxisTexts![c], x,
           size.height - (LineChart.axisOffsetPX - 5), angleRotationInRadians);
     }
@@ -789,30 +792,6 @@ class ChartPainter extends CustomPainter {
               ..strokeWidth = 1);
       } else {
         canvas.drawPath(path!, _linePainter);
-      }
-
-      if (_chart is AreaLineChart) {
-        AreaLineChart areaLineChart = _chart as AreaLineChart;
-
-        if (areaLineChart.gradients != null) {
-          Pair<Color, Color> gradient = areaLineChart.gradients![index];
-
-          _fillPainter.shader = LinearGradient(stops: [
-            0.0,
-            0.6
-          ], colors: [
-            gradient.left.withAlpha((220 * _progress).round()),
-            gradient.right.withAlpha((220 * _progress).round())
-          ], begin: Alignment.bottomCenter, end: Alignment.topCenter)
-              .createShader(Rect.fromLTWH(0, 0, size.width, size.height));
-        } else {
-          _fillPainter.color =
-              chartLine.color.withAlpha((200 * _progress).round());
-        }
-
-        Path areaPathCache = areaLineChart.getAreaPathCache(index)!;
-
-        canvas.drawPath(areaPathCache, _fillPainter);
       }
 
       index++;

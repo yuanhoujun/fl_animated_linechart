@@ -31,7 +31,7 @@ class LineChart {
 
   static final double axisMargin = 5.0;
   static final double axisOffsetPX = 50.0;
-  static final double stepCount = 5;
+  static final double stepCount = 10;
 
   final List<ChartLine> lines;
   final Dates fromTo;
@@ -39,6 +39,8 @@ class LineChart {
   double _maxX = 0;
   double _xAxisOffsetPX = 0;
   double _xAxisOffsetPXright = 0;
+  double _xAxisLabelOffset = 0;
+  double _yAxisLabelOffset = 0;
 
   late Map<String, double> _minY;
   late Map<String, double> _maxY;
@@ -92,6 +94,8 @@ class LineChart {
   double get maxX => _maxX;
   double get xAxisOffsetPX => _xAxisOffsetPX;
   double get xAxisOffsetPXright => _xAxisOffsetPXright;
+  double get xAxisLabelOffset => _xAxisLabelOffset;
+  double get yAxisLabelOffset => _yAxisLabelOffset;
 
   double? minY(String unit) => _minY[unit];
   double? maxY(String unit) => _maxY[unit];
@@ -136,7 +140,7 @@ class LineChart {
 
   //Calculate ui pixels values
   void initialize(double widthPX, double heightPX, TextStyle? style,
-      [double? xAxisLabelOffset]) {
+      [double? xAxisLabelOffset, double? yAxisLabelOffset]) {
     _calcScales(heightPX);
 
     //calc axis textpainters, before using
@@ -235,8 +239,9 @@ class LineChart {
       index++;
     });
 
-    final offestX = xAxisLabelOffset ?? xAxisOffsetPX;
-    _axisOffSetWithPadding = offestX - axisMargin;
+    _axisOffSetWithPadding = xAxisOffsetPX - axisMargin;
+    _xAxisLabelOffset = (xAxisLabelOffset ?? 0) - axisMargin;
+    _yAxisLabelOffset = (yAxisLabelOffset ?? 0) - axisMargin;
     _xAxisTexts = [];
 
     //Todo: make the axis part generic, to support both string, dates, and numbers
@@ -278,6 +283,8 @@ class LineChart {
   Map<int, List<HighlightPoint>>? get seriesMap => _seriesMap;
 
   double? get axisOffSetWithPadding => _axisOffSetWithPadding;
+
+  double? get axisOffsetX => _xAxisOffsetPX;
 
   List<TextPainter>? yAxisTexts(int index) => _yAxisTexts[index];
 

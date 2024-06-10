@@ -39,10 +39,12 @@ class FakeChartSeries {
   Map<DateTime, double> createLine2() {
     Map<DateTime, double> data = {};
     var date = DateTime.now().subtract(Duration(minutes: 40));
+    data[date.subtract(Duration(minutes: 60))] = 13.0;
+    data[date.subtract(Duration(minutes: 50))] = 13.0;
     data[date.subtract(Duration(minutes: 40))] = 13.0;
     data[date.subtract(Duration(minutes: 30))] = 24.0;
-    data[date.subtract(Duration(minutes: 22))] = 39.0;
-    data[date.subtract(Duration(minutes: 20))] = 29.0;
+    data[date.subtract(Duration(minutes: 22))] = -39.0;
+    data[date.subtract(Duration(minutes: 20))] = -29.0;
     data[date.subtract(Duration(minutes: 15))] = 27.0;
     data[date.subtract(Duration(minutes: 12))] = 9.0;
     data[date.subtract(Duration(minutes: 5))] = 35.0;
